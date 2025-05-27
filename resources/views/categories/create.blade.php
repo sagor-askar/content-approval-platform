@@ -1,4 +1,4 @@
-@extends('dashboard.adminLayout')
+@extends('includes.adminLayout')
 @section('content')
     <div class="app-main__inner">
         <div class="app-page-title">
