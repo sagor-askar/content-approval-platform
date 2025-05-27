@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ApprovalController;
 use App\Http\Middleware\AdminMiddleware;
 
 Route::get('/', function () {
@@ -19,9 +20,8 @@ Route::middleware('auth')->group(function () {
         ->middleware(AdminMiddleware::class)
         ->name('admin.dashboard');
 
-    // categories
     Route::resource('categories', CategoryController::class);
-
+    Route::get('/approval', [ApprovalController::class, 'approvalStories'])->name('stories.approval');
 
 
 
