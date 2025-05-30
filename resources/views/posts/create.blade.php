@@ -43,6 +43,13 @@
             </div>
         </div>
 
+        <!-- Tags -->
+        <div class="mb-3">
+            <label for="tags" class="form-label">Tags</label>
+            <input type="text" name="tags" class="form-control" value="{{ old('tags') }}" placeholder="Tags">
+            @error('tags') <small class="text-danger">{{ $message }}</small> @enderror
+        </div>
+
         <button class="btn btn-success">Submit</button>
     </form>
 </div>

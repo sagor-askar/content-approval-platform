@@ -18,6 +18,8 @@ return new class extends Migration
             $table->text('content');
             $table->string('image_path')->nullable();
             $table->string('thumbnail_path')->nullable();
+            $table->enum('status', ['pending', 'approved', 'rejected', 'archived'])->default('pending');
+            $table->json('tags')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

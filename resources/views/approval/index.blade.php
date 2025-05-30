@@ -22,31 +22,63 @@
             <table class="table table-striped table-bordered">
                 <thead class="thead-dark">
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Title</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Image</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Actions</th>
+                        <th></th>
+                        <th>SL.</th>
+                        <th>Title</th>
+                        <th>Content</th>
+                        <th>Categories</th>
+                        <th>Tags</th>
+                        <th>Author</th>
+                        <th>Status</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-
+                    @forelse ($allContent as $post)
                     <tr>
-                        <th scope="row">1</th>
-                        <td>title</td>
-                        <td>description</td>
-                        <td>image</td>
-                        <td>pending</td>
+                        <td></td>
+                        <td>{{ $post->id ?? '' }}</td>
+                        <td>{{ $post->title ?? '' }}</td>
+                        <td>{{ $post->content ?? '' }}</td>
+
                         <td>
-                            <a href="" class="btn btn-sm btn-primary"><i class="fa fa-check"></i> Approve</a>
-                            <form action="" method="POST" style="display:inline-block" onsubmit="return confirm('Are you sure you want to delete this category?');">
+                            @foreach ($post->categories as $category)
+                            <span class="badge bg-secondary text-white">{{ $category->name }}</span>
+                            @endforeach
+                        </td>
+
+                        <td>
+                            <span class="badge bg-info text-dark">{{ $post->tags }}</span>
+                        </td>
+
+                        <td>{{ $post->user->name }}</td>
+
+                        @if($post->status === 'pending')
+                        <td>Pending</td>
+                        @elseif($post->status === 'approved')
+                        <td>Approved</td>
+                        @elseif($post->status === 'rejected')
+                        <td>Rejected</td>
+                        @else
+                        <td>Archived</td>
+                        @endif
+
+                        <td>
+                            <form action="{{ route('posts.updateStatus', $post) }}" method="POST" class="d-inline">
                                 @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger">Reject</button>
+                                @method('PUT')
+
+                                <button type="submit" name="status" value="approved" class="btn btn-sm btn-success" onclick="return confirm('Approve this post?')">Approve</button>
+
+                                <button type="submit" name="status" value="rejected" class="btn btn-sm btn-warning" onclick="return confirm('Reject this post?')">Reject</button>
                             </form>
                         </td>
                     </tr>
+                    @empty
+                    <tr>
+                        <td colspan="6">No posts found.</td>
+                    </tr>
+                    @endforelse
 
                 </tbody>
             </table>
@@ -59,23 +91,56 @@
             <table class="table table-striped table-bordered">
                 <thead class="thead-dark">
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Title</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Image</th>
+                        <th></th>
+                        <th>SL.</th>
+                        <th>Title</th>
+                        <th>Content</th>
+                        <th>Categories</th>
+                        <th>Tags</th>
+                        <th>Author</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
-
+                    @forelse ($approvedContent as $post)
                     <tr>
-                        <th scope="row">1</th>
-                        <td>title</td>
-                        <td>description</td>
-                        <td>image</td>
+                        <td></td>
+                        <td>{{ $post->id ?? '' }}</td>
+                        <td>{{ $post->title ?? '' }}</td>
+                        <td>{{ $post->content ?? '' }}</td>
+
+                        <td>
+                            @foreach ($post->categories as $category)
+                            <span class="badge bg-secondary text-white">{{ $category->name }}</span>
+                            @endforeach
+                        </td>
+
+                        <td>
+                            <span class="badge bg-info text-dark">{{ $post->tags }}</span>
+                        </td>
+
+                        <td>{{ $post->user->name }}</td>
+
+                        @if($post->status === 'pending')
+                        <td>Pending</td>
+                        @elseif($post->status === 'approved')
+                        <td>Approved</td>
+                        @elseif($post->status === 'rejected')
+                        <td>Rejected</td>
+                        @else
+                        <td>Archived</td>
+                        @endif
+
                     </tr>
+                    @empty
+                    <tr>
+                        <td colspan="6">No posts found.</td>
+                    </tr>
+                    @endforelse
 
                 </tbody>
             </table>
+
         </div>
 
         <hr>
@@ -85,23 +150,56 @@
             <table class="table table-striped table-bordered">
                 <thead class="thead-dark">
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Title</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Image</th>
+                        <th></th>
+                        <th>SL.</th>
+                        <th>Title</th>
+                        <th>Content</th>
+                        <th>Categories</th>
+                        <th>Tags</th>
+                        <th>Author</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
-
+                    @forelse ($archivedContent as $post)
                     <tr>
-                        <th scope="row">1</th>
-                        <td>title</td>
-                        <td>description</td>
-                        <td>image</td>
+                        <td></td>
+                        <td>{{ $post->id ?? '' }}</td>
+                        <td>{{ $post->title ?? '' }}</td>
+                        <td>{{ $post->content ?? '' }}</td>
+
+                        <td>
+                            @foreach ($post->categories as $category)
+                            <span class="badge bg-secondary text-white">{{ $category->name }}</span>
+                            @endforeach
+                        </td>
+
+                        <td>
+                            <span class="badge bg-info text-dark">{{ $post->tags }}</span>
+                        </td>
+
+                        <td>{{ $post->user->name }}</td>
+
+                        @if($post->status === 'pending')
+                        <td>Pending</td>
+                        @elseif($post->status === 'approved')
+                        <td>Approved</td>
+                        @elseif($post->status === 'rejected')
+                        <td>Rejected</td>
+                        @else
+                        <td>Archived</td>
+                        @endif
+
                     </tr>
+                    @empty
+                    <tr>
+                        <td colspan="6">No posts found.</td>
+                    </tr>
+                    @endforelse
 
                 </tbody>
             </table>
+
         </div>
 
     </div>

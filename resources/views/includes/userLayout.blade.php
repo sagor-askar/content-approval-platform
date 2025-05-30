@@ -116,7 +116,7 @@
                             </li>
 
                             <li>
-                                <a href="">
+                                <a href="{{ route('stories.archived') }}">
                                     <i class="fa fa-book"></i>
                                     Archieved Content
                                 </a>

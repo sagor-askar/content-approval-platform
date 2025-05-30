@@ -11,7 +11,15 @@ class Post extends Model
 
     protected $table = 'posts';
 
-    protected $fillable = ['user_id', 'title', 'content', 'image_path', 'thumbnail_path'];
+    protected $fillable = [
+        'user_id',
+        'title',
+        'content',
+        'image_path',
+        'thumbnail_path',
+        'status',
+        'tags',
+    ];
 
     // relationship
     public function user() {

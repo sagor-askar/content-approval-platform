@@ -30,30 +30,43 @@ class PostController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-{
-    $data = $request->validate([
-        'title' => 'required',
-        'content' => 'required',
-        'image_path' => 'nullable|image',
-        'categories' => 'array',
-    ]);
+    {
+        $data = $request->validate([
+            'title' => 'required',
+            'content' => 'required',
+            'image' => 'nullable|image',
+            'categories' => 'array',
+            'tags' => 'nullable|string', // expecting comma-separated string
+        ]);
 
-    if ($request->hasFile('image')) {
-        $paths = ImageHelper::uploadWithThumbnail($request->file('image'));
-        $data = array_merge($data, $paths);
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $paths = ImageHelper::uploadWithThumbnail($request->file('image'));
+            $data['image_path'] = $paths['original'];
+            $data['thumbnail_path'] = $paths['thumbnail'];
+        }
+
+        // Add user ID and default status
+        $data['user_id'] = auth()->id();
+        $data['status'] = 'pending';
+
+        // Convert tags string to JSON array
+        $data['tags'] = $request->filled('tags')
+            ? json_encode(array_map('trim', explode(',', $request->tags)))
+            : null;
+
+        // Create the post
+        $post = Post::create($data);
+
+        // Attach categories
+        if (!empty($data['categories'])) {
+            $post->categories()->attach($data['categories']);
+        }
+
+        return redirect()->route('posts.index')->with('success', 'Post created!');
     }
 
-    $data['user_id'] = auth()->id();
 
-    $post = Post::create($data);
-
-    if (!empty($data['categories'])) {
-        $post->categories()->attach($data['categories']);
-    }
-
-    return redirect()->route('posts.index')->with('success', 'Post created!');
-
-}
 
 
     /**
@@ -87,5 +100,11 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($id)->delete();
         return redirect()->route('posts.index');
+    }
+
+    public function archivedStories()
+    {
+        $posts = Post::where('status', 'archived')->get();
+        return view('posts.archived', compact('posts'));
     }
 }

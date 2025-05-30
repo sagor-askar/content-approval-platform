@@ -2,8 +2,7 @@
 @section('content')
 
 <div class="container">
-    <h1 class="mb-4">All Posts</h1>
-    <a href="{{ route('posts.create') }}" class="btn btn-primary mb-3">Create New Post</a>
+    <h1 class="mb-4">Archived Posts</h1>
 
     <div class="table-responsive">
         <table class="table table-bordered table-striped align-middle">
@@ -17,7 +16,6 @@
                     <th>Tags</th>
                     <th>Author</th>
                     <th>Status</th>
-                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -49,13 +47,6 @@
                     @else
                     <td>Archived</td>
                     @endif
-
-                    <td>
-                        <form action="{{ route('posts.destroy', $post) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this post?')">
-                            @csrf @method('DELETE')
-                            <button class="btn btn-sm btn-danger">Delete</button>
-                        </form>
-                    </td>
                 </tr>
                 @empty
                 <tr>

@@ -24,10 +24,12 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('categories', CategoryController::class);
     Route::get('/approval', [ApprovalController::class, 'approvalStories'])->name('stories.approval');
+    Route::put('/posts/{post}/status', [ApprovalController::class, 'updateStatus'])->name('posts.updateStatus');
 
 
     // User Routes
     Route::get('/user/dashboard', fn () => view('dashboard.user'))
         ->name('user.dashboard');
     Route::resource('posts', PostController::class);
+    Route::get('/archived-posts', [PostController::class, 'archivedStories'])->name('stories.archived');
 });

@@ -11,15 +11,16 @@ class ImageHelper
     {
         $originalPath = $image->store("public/{$folder}");
         $filename = basename($originalPath);
+
         $thumbnailPath = "public/{$folder}/thumbnails/{$filename}";
 
         $thumbnail = Image::make($image)->fit(300, 200);
-
         Storage::put($thumbnailPath, (string) $thumbnail->encode());
 
         return [
-            'original' => Storage::url($originalPath),
-            'thumbnail' => Storage::url($thumbnailPath),
+            'original' => Storage::url($originalPath), 
+            'thumbnail' => Storage::url($thumbnailPath), 
         ];
     }
+
 }
